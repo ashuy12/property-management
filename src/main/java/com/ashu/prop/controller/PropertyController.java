@@ -19,19 +19,19 @@ public class PropertyController {
     @PostMapping("/properties")
     public ResponseEntity<PropertyDTO> saveProperty(@RequestBody PropertyDTO propertyDTO) {
         propertyDTO = propertyService.saveProperty(propertyDTO);
-        return new ResponseEntity<PropertyDTO>(propertyDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(propertyDTO, HttpStatus.CREATED);
     }
 
     @GetMapping("/properties")
     public ResponseEntity<List<PropertyDTO>> getAllProperties() {
         List<PropertyDTO> listOfProperties = propertyService.getAllProperties();
-        return new ResponseEntity<List<PropertyDTO>>(listOfProperties, HttpStatus.OK);
+        return new ResponseEntity<>(listOfProperties, HttpStatus.OK);
     }
 
     @GetMapping("/property/{propertyID}")
     public ResponseEntity<PropertyDTO> getProperty(@PathVariable Long propertyID) {
         PropertyDTO propertyDTO = propertyService.getPropertyByID(propertyID);
-        return new ResponseEntity<PropertyDTO>(propertyDTO, HttpStatus.OK);
+        return new ResponseEntity<>(propertyDTO, HttpStatus.OK);
     }
 
 
@@ -39,10 +39,10 @@ public class PropertyController {
     public ResponseEntity<Object> updateProperty(@RequestBody PropertyDTO propertyDTO, @PathVariable Long propertyID) {
         propertyDTO = propertyService.updateProperty(propertyDTO, propertyID);
         if(propertyDTO != null) {
-            return new ResponseEntity<Object>(propertyDTO, HttpStatus.OK);
+            return new ResponseEntity<>(propertyDTO, HttpStatus.OK);
         }else{
             String strMessage = "Property not found with Id: " + propertyID;
-            return new ResponseEntity<Object>(strMessage, HttpStatus.OK);
+            return new ResponseEntity<>(strMessage, HttpStatus.OK);
         }
     }
 }

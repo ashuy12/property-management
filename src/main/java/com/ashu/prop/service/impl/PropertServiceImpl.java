@@ -41,7 +41,7 @@ public class PropertServiceImpl implements IPropertyService {
     @Override
     public List<PropertyDTO> getAllProperties() {
         List<PropertyEntity> iterablePropEntity = (List<PropertyEntity>)propertyRepository.findAll();
-        List<PropertyDTO> listOfProperties = new ArrayList<PropertyDTO>();
+        List<PropertyDTO> listOfProperties = new ArrayList<>();
         for (PropertyEntity propertyEntity: iterablePropEntity) {
             PropertyDTO propertyDTO = propertyConverter.convertPropertyEntitytoPropertyDTO(propertyEntity);
             listOfProperties.add(propertyDTO);
@@ -51,7 +51,7 @@ public class PropertServiceImpl implements IPropertyService {
 
     @Override
     public PropertyDTO getPropertyByID(Long propertyID) {
-        logger.debug("prop:" + prop);
+        logger.debug("prop: {}", prop);
         Optional<PropertyEntity> propertyEntity = propertyRepository.findById(propertyID);
         PropertyDTO propertyDTO = null;
         if(propertyEntity.isPresent()) {
