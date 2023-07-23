@@ -2,8 +2,10 @@ package com.ashu.prop.controller;
 
 import com.ashu.prop.dto.PropertyDTO;
 import com.ashu.prop.service.IPropertyService;
+import com.ashu.prop.service.exception.PropertyNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +30,13 @@ public class PropertyController {
         return new ResponseEntity<List<PropertyDTO>>(listOfProperties, HttpStatus.OK);
     }
 
+    @GetMapping("/property/{propertyID}")
+    public ResponseEntity<PropertyDTO> getProperty(@PathVariable Long propertyID) {
+        PropertyDTO propertyDTO = propertyService.getPropertyByID(propertyID);
+        return new ResponseEntity<PropertyDTO>(propertyDTO, HttpStatus.OK);
+    }
+
+
     @PutMapping("/properties/{propertyID}")
     public ResponseEntity<Object> updateProperty(@RequestBody PropertyDTO propertyDTO, @PathVariable Long propertyID) {
         propertyDTO = propertyService.updateProperty(propertyDTO, propertyID);
@@ -38,5 +47,4 @@ public class PropertyController {
             return new ResponseEntity<Object>(strMessage, HttpStatus.OK);
         }
     }
-
 }

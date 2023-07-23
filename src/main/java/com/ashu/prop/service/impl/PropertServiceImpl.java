@@ -5,6 +5,10 @@ import com.ashu.prop.repository.IPropertyRepository;
 import com.ashu.prop.converter.PropertyConverter;
 import com.ashu.prop.dto.PropertyDTO;
 import com.ashu.prop.service.IPropertyService;
+import com.ashu.prop.service.exception.PropertyNotFoundException;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,6 +19,8 @@ import java.util.Optional;
 
 @Service
 public class PropertServiceImpl implements IPropertyService {
+
+    private static final Logger logger = LoggerFactory.getLogger(PropertServiceImpl.class);
 
     @Value("${ashu.prop:}")
     private String prop;
@@ -35,7 +41,6 @@ public class PropertServiceImpl implements IPropertyService {
 
     @Override
     public List<PropertyDTO> getAllProperties() {
-        System.out.println("prop:" + prop);
         List<PropertyEntity> iterablePropEntity = (List<PropertyEntity>)propertyRepository.findAll();
         List<PropertyDTO> listOfProperties = new ArrayList<PropertyDTO>();
         for (PropertyEntity propertyEntity: iterablePropEntity) {
@@ -43,6 +48,20 @@ public class PropertServiceImpl implements IPropertyService {
             listOfProperties.add(propertyDTO);
         }
         return listOfProperties;
+    }
+
+    @Override
+    public PropertyDTO getPropertyByID(Long propertyID) {
+        logger.debug("prop:" + prop);
+        Optional<PropertyEntity> propertyEntity = propertyRepository.findById(propertyID);
+        PropertyDTO propertyDTO = null;
+        if(propertyEntity.isPresent()) {
+            PropertyEntity pe = propertyEntity.get();
+            propertyDTO = propertyConverter.convertPropertyEntitytoPropertyDTO(pe);
+        } else {
+            throw new PropertyNotFoundException("Property with ID " + propertyID + " not found!");
+        }
+        return propertyDTO;
     }
 
     @Override

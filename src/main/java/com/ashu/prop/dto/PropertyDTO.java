@@ -14,4 +14,16 @@ public class PropertyDTO {
     private String ownerEmail;
     private Double price;
     private String address;
+
+    @Override
+    public String toString() {
+        return "PropertyDTO [id = " + id +
+                ", title = " + title +
+                ", description = " + description +
+                ", owner name = " + ownerName +
+                ", owner email = " + ownerEmail +
+                ", price = " + price +
+                ", address = " + address +
+                "]";
+    }
 }

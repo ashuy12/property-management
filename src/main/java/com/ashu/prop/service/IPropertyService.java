@@ -9,5 +9,7 @@ public interface IPropertyService {
 
     List<PropertyDTO> getAllProperties();
 
+    PropertyDTO getPropertyByID(Long propertyID);
+
     PropertyDTO updateProperty(PropertyDTO propertyDTO, Long propertyID);
 }
