@@ -1,5 +1,6 @@
 package com.ashu.prop.aspect;
 
+import com.ashu.prop.exception.ApplicationException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -31,8 +32,7 @@ public class LoggingAspect {
     /**
      * Pointcut that matches all Spring beans in the application's main packages.
      */
-    @Pointcut("within(com.ashu.prop.service..*)" +
-            " || within(com.ashu.prop.controller..*)")
+    @Pointcut("within(com.ashu.prop.controller..*)")
     public void applicationPackagePointcut() {
         // Method is empty as this is just a Pointcut, the implementations are in the advices.
     }
@@ -45,6 +45,7 @@ public class LoggingAspect {
      */
     @AfterThrowing(pointcut = "applicationPackagePointcut() && springBeanPointcut()", throwing = "e")
     public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
+        if(!(e instanceof ApplicationException))
         log.error("Exception in {}.{}() with cause = {}", joinPoint.getSignature().getDeclaringTypeName(),
                 joinPoint.getSignature().getName(), e.getCause() != null ? e.getCause() : "NULL", e);
     }

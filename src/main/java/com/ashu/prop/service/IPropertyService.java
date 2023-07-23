@@ -1,6 +1,7 @@
 package com.ashu.prop.service;
 
 import com.ashu.prop.dto.PropertyDTO;
+import com.ashu.prop.exception.PropertyNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

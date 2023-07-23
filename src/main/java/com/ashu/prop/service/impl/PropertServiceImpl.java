@@ -1,12 +1,11 @@
 package com.ashu.prop.service.impl;
 
 import com.ashu.prop.entity.PropertyEntity;
+import com.ashu.prop.exception.PropertyNotFoundException;
 import com.ashu.prop.repository.IPropertyRepository;
 import com.ashu.prop.converter.PropertyConverter;
 import com.ashu.prop.dto.PropertyDTO;
 import com.ashu.prop.service.IPropertyService;
-import com.ashu.prop.service.exception.PropertyNotFoundException;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
