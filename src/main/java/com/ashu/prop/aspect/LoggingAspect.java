@@ -47,7 +47,8 @@ public class LoggingAspect {
     public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
         if(!(e instanceof ApplicationException))
             log.error("Exception in {}.{}() with cause = {}", joinPoint.getSignature().getDeclaringTypeName(),
-                joinPoint.getSignature().getName(), e.getCause() != null ? e.getCause() : "NULL", e);
+                joinPoint.getSignature().getName(),
+                    e.getCause() != null ? e.getCause() : e.getMessage(), e);
     }
 
     /**
