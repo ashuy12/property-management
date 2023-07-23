@@ -30,7 +30,7 @@ public class UserController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = UserDTO.class)) })
             })
-    @PostMapping("/user")
+    @PostMapping(path = "/user", consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<UserDTO> resisterUser(@Valid @RequestBody UserDTO userDTO) {
         userDTO = userService.resisterUser(userDTO);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);

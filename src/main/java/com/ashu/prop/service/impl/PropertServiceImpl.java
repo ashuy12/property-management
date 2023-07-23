@@ -1,10 +1,13 @@
 package com.ashu.prop.service.impl;
 
 import com.ashu.prop.entity.PropertyEntity;
+import com.ashu.prop.entity.UserEntity;
+import com.ashu.prop.exception.ApplicationException;
 import com.ashu.prop.exception.PropertyNotFoundException;
 import com.ashu.prop.repository.IPropertyRepository;
 import com.ashu.prop.converter.PropertyConverter;
 import com.ashu.prop.dto.PropertyDTO;
+import com.ashu.prop.repository.IUserRepository;
 import com.ashu.prop.service.IPropertyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,15 +31,36 @@ public class PropertServiceImpl implements IPropertyService {
     private IPropertyRepository propertyRepository;
 
     @Autowired
+    private IUserRepository userRepository;
+
+    @Autowired
     private PropertyConverter propertyConverter;
 
     @Override
     public PropertyDTO saveProperty(PropertyDTO propertyDTO) {
-         PropertyEntity propertyEntity = propertyConverter.convertPropertyDTOtoPropertyEntity(propertyDTO);
-         propertyEntity = propertyRepository.save(propertyEntity);
-         propertyDTO =  propertyConverter.convertPropertyEntitytoPropertyDTO(propertyEntity);
-         return propertyDTO;
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(propertyDTO.getUserId());
+        if(optionalUserEntity.isPresent()) {
+            PropertyEntity propertyEntity = propertyConverter.convertPropertyDTOtoPropertyEntity(propertyDTO);
+            propertyEntity.setUserEntity(optionalUserEntity.get());
+            propertyEntity = propertyRepository.save(propertyEntity);
+            propertyDTO = propertyConverter.convertPropertyEntitytoPropertyDTO(propertyEntity);
+            return propertyDTO;
+        } else {
+            throw new ApplicationException("User details not found with ID "+ propertyDTO.getUserId());
+        }
     }
+
+    @Override
+    public List<PropertyDTO> getAllPropertiesForUser(Long userId) {
+        List<PropertyEntity> iterablePropEntity = propertyRepository.findAllByUserEntityId(userId);
+        List<PropertyDTO> listOfProperties = new ArrayList<>();
+        for (PropertyEntity propertyEntity: iterablePropEntity) {
+            PropertyDTO propertyDTO = propertyConverter.convertPropertyEntitytoPropertyDTO(propertyEntity);
+            listOfProperties.add(propertyDTO);
+        }
+        return listOfProperties;
+    }
+
 
     @Override
     public List<PropertyDTO> getAllProperties() {

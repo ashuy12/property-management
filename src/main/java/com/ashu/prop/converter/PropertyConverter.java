@@ -27,6 +27,7 @@ public class PropertyConverter {
         propertyDTO.setTitle(propertyEntity.getTitle());
         propertyDTO.setOwnerEmail(propertyEntity.getOwnerEmail());
         propertyDTO.setOwnerName(propertyEntity.getOwnerName());
+        propertyDTO.setUserId(propertyEntity.getUserEntity().getId());
         return propertyDTO;
     }
 
